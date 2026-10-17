@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+{% block titulo %}Cadastro — PetConecta{% endblock %}
+
+{% block conteudo %}
+<h1>Criar Conta</h1>
+
+<form method="POST" class="formulario">
+    <label>Nome completo *
+        <input type="text" name="nome" required>
+    </label>
+
+    <label>E-mail *
+        <input type="email" name="email" required>
+    </label>
+
+    <label>Senha * (mínimo 6 caracteres)
+        <input type="password" name="senha" required minlength="6">
+    </label>
+
+    <label>Telefone
+        <input type="text" name="telefone" placeholder="(00) 00000-0000">
+    </label>
+
+    <label>Cidade
+        <input type="text" name="cidade" placeholder="Ex: Aparecida - SP">
+    </label>
+
+    <button type="submit" class="botao">Cadastrar</button>
+</form>
+
+<p style="text-align:center; margin-top:1rem;">
+    Já tem conta? <a href="{{ url_for('auth.login') }}">Entre</a>
+</p>
+{% endblock %}

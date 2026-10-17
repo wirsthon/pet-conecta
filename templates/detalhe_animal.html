@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% block titulo %}{{ animal.nome }} — PetConecta{% endblock %}
+
+{% block conteudo %}
+<div class="detalhe">
+    <div class="detalhe-foto">
+        {% if animal.foto %}
+            <img src="{{ url_for('static', filename='uploads/' + animal.foto) }}" alt="Foto de {{ animal.nome }}">
+        {% else %}
+            <div class="sem-foto grande">Sem foto</div>
+        {% endif %}
+    </div>
+    <div class="detalhe-info">
+        <h1>{{ animal.nome }}</h1>
+        <p><strong>Espécie:</strong> {{ animal.especie }}</p>
+        <p><strong>Porte:</strong> {{ animal.porte or 'Não informado' }}</p>
+        <p><strong>Idade:</strong> {{ animal.idade or 'Não informada' }}</p>
+        <p><strong>Cidade:</strong> {{ animal.cidade }}</p>
+        <p><strong>Status:</strong> {{ animal.status }}</p>
+        <hr>
+        <h3>Descrição</h3>
+        <p>{{ animal.descricao or 'Sem descrição.' }}</p>
+        <hr>
+        <h3>Contato do resgatador</h3>
+        <p><strong>Nome:</strong> {{ animal.usuario.nome }}</p>
+        <p><strong>E-mail:</strong> {{ animal.usuario.email }}</p>
+        {% if animal.usuario.telefone %}
+            <p><strong>Telefone:</strong> {{ animal.usuario.telefone }}</p>
+        {% endif %}
+
+        {% if current_user.is_authenticated and current_user.id == animal.usuario_id and animal.status == 'disponivel' %}
+            <form method="POST" action="{{ url_for('views.marcar_adotado', animal_id=animal.id) }}">
+                <button type="submit" class="botao">Marcar como adotado</button>
+            </form>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

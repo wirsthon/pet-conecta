@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% block titulo %}Início — PetConecta{% endblock %}
+
+{% block conteudo %}
+<section class="hero">
+  <img src="{{ url_for('static', filename='img/cachorro.png') }}" alt="Cachorro" class="pet-hero">
+  <img src="{{ url_for('static', filename='img/gato.png') }}" alt="Gato" class="pet-hero pet-hero-direita">
+ <h1>Adote. Resgate. Transforme vidas.</h1>
+  <p>Todo animal resgatado merece uma casa. Ajude a encontrar a dele.</p>
+    <div class="estatisticas">
+        <div class="card-stat">
+            <strong>{{ total_animais }}</strong>
+            <span>Animais disponíveis</span>
+        </div>
+        <div class="card-stat">
+            <strong>{{ total_adotados }}</strong>
+            <span>Já adotados</span>
+        </div>
+    </div>
+    <a href="{{ url_for('views.lista_animais') }}" class="botao">Ver animais para adoção</a>
+</section>
+
+<section>
+    <h2>Últimos cadastrados</h2>
+    <div class="grade-animais">
+        {% for a in ultimos %}
+            <div class="card-animal">
+                {% if a.foto %}
+                    <img src="{{ url_for('static', filename='uploads/' + a.foto) }}" alt="Foto de {{ a.nome }}">
+                {% else %}
+                    <div class="sem-foto">Sem foto</div>
+                {% endif %}
+                <h3>{{ a.nome }}</h3>
+                <p>{{ a.especie }} • {{ a.porte or '—' }} • {{ a.cidade }}</p>
+                <a href="{{ url_for('views.detalhe_animal', animal_id=a.id) }}" class="botao-pequeno">Ver detalhes</a>
+            </div>
+        {% else %}
+            <p>Nenhum animal cadastrado ainda.</p>
+        {% endfor %}
+    </div>
+</section>
+{% endblock %}

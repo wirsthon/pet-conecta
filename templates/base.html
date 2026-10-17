@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block titulo %}PetConecta{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <header>
+        <nav class="navbar">
+            <a href="{{ url_for('views.index') }}" class="logo">🐾 PetConecta</a>
+            <ul class="menu">
+                <li><a href="{{ url_for('views.index') }}">Início</a></li>
+                <li><a href="{{ url_for('views.lista_animais') }}">Adotar</a></li>
+                {% if current_user.is_authenticated %}
+                    <li><a href="{{ url_for('views.cadastrar_animal') }}">Cadastrar Animal</a></li>
+                    <li><a href="{{ url_for('views.meus_animais') }}">Meus Animais</a></li>
+                    <li><a href="{{ url_for('auth.logout') }}">Sair ({{ current_user.nome }})</a></li>
+                {% else %}
+                    <li><a href="{{ url_for('auth.login') }}">Entrar</a></li>
+                    <li><a href="{{ url_for('auth.cadastro') }}">Cadastrar</a></li>
+                {% endif %}
+            </ul>
+        </nav>
+    </header>
+
+    <main class="container">
+        {% with mensagens = get_flashed_messages(with_categories=true) %}
+            {% if mensagens %}
+                {% for categoria, msg in mensagens %}
+                    <div class="alerta alerta-{{ categoria }}">{{ msg }}</div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        {% block conteudo %}{% endblock %}
+    </main>
+
+    <footer>
+        <p>PetConecta </p>
+    </footer>
+
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+</html>

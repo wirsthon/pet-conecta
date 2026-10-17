@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+{% block titulo %}Cadastrar Animal — PetConecta{% endblock %}
+
+{% block conteudo %}
+<h1>Cadastrar Animal para Adoção</h1>
+
+<form method="POST" enctype="multipart/form-data" class="formulario">
+    <label>Nome do animal *
+        <input type="text" name="nome" required placeholder="Ex: Rex">
+    </label>
+
+    <label>Espécie *
+        <select name="especie" required>
+            <option value="Cachorro">Cachorro</option>
+            <option value="Gato">Gato</option>
+            <option value="Outro">Outro</option>
+        </select>
+    </label>
+
+    <label>Porte
+        <select name="porte">
+            <option value="">Selecione</option>
+            <option value="Pequeno">Pequeno</option>
+            <option value="Médio">Médio</option>
+            <option value="Grande">Grande</option>
+        </select>
+    </label>
+
+    <label>Idade
+        <select name="idade">
+            <option value="">Selecione</option>
+            <option value="Filhote">Filhote</option>
+            <option value="Adulto">Adulto</option>
+            <option value="Idoso">Idoso</option>
+        </select>
+    </label>
+
+    <label>Cidade *
+        <input type="text" name="cidade" required placeholder="Ex: Aparecida - SP">
+    </label>
+
+    <label>Descrição
+        <textarea name="descricao" rows="4" placeholder="Conte um pouco sobre o animal (temperamento, saúde, etc)"></textarea>
+    </label>
+
+    <label>Foto
+        <input type="file" name="foto" accept="image/*">
+    </label>
+
+    <button type="submit" class="botao">Cadastrar Animal</button>
+</form>
+{% endblock %}
