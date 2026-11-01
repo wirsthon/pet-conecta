@@ -6,16 +6,16 @@ from models import Usuario, Animal
 
 @pytest.fixture
 def client():
-    app = create_app()
-    app.config['TESTING'] = True
-    app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///:memory:'
-
+    app = create_app({
+        'TESTING': True,
+        'SQLALCHEMY_DATABASE_URI': 'sqlite:///:memory:'
+    })
+    
     with app.test_client() as client:
         with app.app_context():
             db.create_all()
             yield client
             db.drop_all()
-
 
 def test_cadastro_usuario(client):
     response = client.post('/cadastro', data={

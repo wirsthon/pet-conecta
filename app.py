@@ -5,13 +5,16 @@ from flask import Flask, flash, redirect, request, url_for
 from extensions import db, login_manager
 
 
-def create_app():
+def create_app(config=None):
     app = Flask(__name__)
     app.config['SECRET_KEY'] = os.getenv('SECRET_KEY', 'dev-only-nao-use-em-producao')
     app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///banco.db'
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
     app.config['UPLOAD_FOLDER'] = 'static/uploads'
     app.config['MAX_CONTENT_LENGTH'] = 5 * 1024 * 1024
+
+    if config:
+        app.config.update(config)
 
     os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
 
