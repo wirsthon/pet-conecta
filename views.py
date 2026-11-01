@@ -3,7 +3,7 @@ from datetime import datetime
 
 from flask import (
     Blueprint, render_template, request, redirect,
-    url_for, flash, current_app
+    url_for, flash, current_app, jsonify
 )
 from flask_login import login_required, current_user
 from werkzeug.utils import secure_filename
@@ -13,7 +13,6 @@ from models import Animal
 
 views_bp = Blueprint('views', __name__)
 
-# extensões de imagem aceitas no upload
 EXTENSOES_PERMITIDAS = {'png', 'jpg', 'jpeg', 'webp'}
 
 
@@ -77,7 +76,6 @@ def cadastrar_animal():
         descricao = request.form.get('descricao', '')
         cidade = request.form.get('cidade', '').strip()
 
-        # campos obrigatórios (o "required" do HTML pode ser contornado)
         if not nome or not especie or not cidade:
             flash('Preencha nome, espécie e cidade.', 'erro')
             return render_template('cadastro_animal.html')
@@ -91,7 +89,7 @@ def cadastrar_animal():
 
             foto_nome = secure_filename(f"{datetime.now().timestamp()}_{foto.filename}")
             pasta = current_app.config['UPLOAD_FOLDER']
-            os.makedirs(pasta, exist_ok=True)  # cria a pasta se ainda não existir
+            os.makedirs(pasta, exist_ok=True)
             foto.save(os.path.join(pasta, foto_nome))
 
         novo = Animal(
@@ -130,3 +128,21 @@ def meus_animais():
                .order_by(Animal.criado_em.desc())
                .all())
     return render_template('meus_animais.html', animais=animais)
+
+
+@views_bp.route('/api/animais')
+def api_animais():
+    animais = Animal.query.filter_by(status='disponivel').all()
+    lista = []
+    for a in animais:
+        lista.append({
+            'id': a.id, 
+            'nome': a.nome, 
+            'especie': a.especie,
+            'porte': a.porte, 
+            'idade': a.idade, 
+            'cidade': a.cidade,
+            'descricao': a.descricao,
+            'foto': a.foto
+        })
+    return jsonify(lista)
