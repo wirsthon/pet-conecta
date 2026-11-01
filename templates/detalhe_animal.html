@@ -16,7 +16,7 @@
         <p><strong>Porte:</strong> {{ animal.porte or 'Não informado' }}</p>
         <p><strong>Idade:</strong> {{ animal.idade or 'Não informada' }}</p>
         <p><strong>Cidade:</strong> {{ animal.cidade }}</p>
-        <p><strong>Status:</strong> {{ animal.status }}</p>
+        <p><strong>Status:</strong> {% if animal.status == 'disponivel' %}Disponível{% else %}Adotado{% endif %}</p>
         <hr>
         <h3>Descrição</h3>
         <p>{{ animal.descricao or 'Sem descrição.' }}</p>
